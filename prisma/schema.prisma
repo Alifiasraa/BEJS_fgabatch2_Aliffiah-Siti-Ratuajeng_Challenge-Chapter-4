@@ -14,18 +14,18 @@ datasource db {
 }
 
 model Address {
-  id          Int        @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   description String
   district    String
   province    String
   country     String
   post_code   String
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @updatedAt
-  customers   Customer[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  user        User[]
 }
 
-model Customer {
+model User {
   id           String    @id @default(uuid())
   name         String
   gender       Gender
@@ -41,14 +41,15 @@ model Customer {
 
 model Account {
   id             String        @id @default(uuid())
-  customer_id    String
+  user_id        String
   account_number String
   balance        Decimal
   account_status AccountStatus
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
-  customer       Customer      @relation(fields: [customer_id], references: [id])
-  transaction    transaction[]
+  user           User          @relation(fields: [user_id], references: [id])
+  transaction    transaction[] @relation("sourceAccount")
+  received       transaction[] @relation("destinationAccount")
 }
 
 model transaction_type {
@@ -60,16 +61,17 @@ model transaction_type {
 }
 
 model transaction {
-  id                  String            @id @default(uuid())
-  account_id          String
-  transaction_type_id String
-  destination_account String
-  amount              Decimal
-  note                String
-  transaction_status  TransactionStatus
-  transaction_date    DateTime          @default(now())
-  account             Account           @relation(fields: [account_id], references: [id])
-  transaction_type    transaction_type  @relation(fields: [transaction_type_id], references: [id])
+  id                     String            @id @default(uuid())
+  source_account_id      String
+  destination_account_id String
+  transaction_type_id    String
+  amount                 Decimal
+  note                   String
+  transaction_status     TransactionStatus
+  transaction_date       DateTime          @default(now())
+  sourceAccount          Account           @relation("sourceAccount", fields: [source_account_id], references: [id])
+  destinationAccount     Account           @relation("destinationAccount", fields: [destination_account_id], references: [id])
+  transaction_type       transaction_type  @relation(fields: [transaction_type_id], references: [id])
 }
 
 enum Gender {
