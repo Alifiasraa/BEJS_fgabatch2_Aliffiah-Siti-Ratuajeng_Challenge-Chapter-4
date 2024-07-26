@@ -64,14 +64,14 @@ model transaction {
   id                     String            @id @default(uuid())
   source_account_id      String
   destination_account_id String
-  transaction_type_id    String
+  transaction_type_id    String?
   amount                 Decimal
   note                   String
   transaction_status     TransactionStatus
   transaction_date       DateTime          @default(now())
   sourceAccount          Account           @relation("sourceAccount", fields: [source_account_id], references: [id])
   destinationAccount     Account           @relation("destinationAccount", fields: [destination_account_id], references: [id])
-  transaction_type       transaction_type  @relation(fields: [transaction_type_id], references: [id])
+  transaction_type       transaction_type? @relation(fields: [transaction_type_id], references: [id])
 }
 
 enum Gender {
