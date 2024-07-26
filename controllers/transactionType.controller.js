@@ -12,6 +12,14 @@ const createType = async (req, res) => {
       id,
       description,
     });
+
+    if (!id || !description) {
+      return res.status(400).json({
+        status: "Fail",
+        message: "Please provide all required fields",
+      });
+    }
+
     res.status(201).json({
       status: "Success",
       message: "Transaction type created successfully",

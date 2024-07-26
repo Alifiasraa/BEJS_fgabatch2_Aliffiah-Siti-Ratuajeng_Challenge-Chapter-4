@@ -4,11 +4,10 @@ const createTransaction = async (data) => {
   const {
     source_account_id,
     destination_account_id,
-    // transaction_type_id,
+    transaction_type_id,
     amount,
     note,
     transaction_status,
-    transaction_date,
   } = data;
 
   try {
@@ -16,11 +15,10 @@ const createTransaction = async (data) => {
       data: {
         source_account_id,
         destination_account_id,
-        // transaction_type_id: transaction_type_id,
+        transaction_type_id,
         amount,
         note,
         transaction_status,
-        transaction_date,
       },
       include: {
         sourceAccount: true,
