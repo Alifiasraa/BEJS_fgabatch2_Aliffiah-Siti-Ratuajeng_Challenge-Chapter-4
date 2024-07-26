@@ -13,6 +13,9 @@ const createUser = async (data) => {
         email: email,
         address_id: address_id,
       },
+      include: {
+        address: true,
+      },
     });
     return result;
   } catch (err) {
@@ -22,7 +25,11 @@ const createUser = async (data) => {
 
 const getAllUsers = async () => {
   try {
-    const result = await prisma.user.findMany();
+    const result = await prisma.user.findMany({
+      include: {
+        address: true,
+      },
+    });
     return result;
   } catch (err) {
     throw new Error(err.message);
@@ -34,6 +41,9 @@ const getUserById = async (id) => {
     const result = await prisma.user.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        address: true,
       },
     });
     return result;

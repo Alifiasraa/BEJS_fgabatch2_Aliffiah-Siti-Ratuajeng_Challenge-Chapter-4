@@ -4,11 +4,10 @@ const createTransaction = async (data) => {
   const {
     source_account_id,
     destination_account_id,
-    // transaction_type_id,
+    transaction_type_id,
     amount,
     note,
     transaction_status,
-    transaction_date,
   } = data;
 
   try {
@@ -16,11 +15,10 @@ const createTransaction = async (data) => {
       data: {
         source_account_id,
         destination_account_id,
-        // transaction_type_id: transaction_type_id,
+        transaction_type_id,
         amount,
         note,
         transaction_status,
-        transaction_date,
       },
       include: {
         sourceAccount: true,
@@ -35,7 +33,12 @@ const createTransaction = async (data) => {
 
 const getAllTransaction = async () => {
   try {
-    const result = await prisma.transaction.findMany();
+    const result = await prisma.transaction.findMany({
+      include: {
+        sourceAccount: true,
+        destinationAccount: true,
+      },
+    });
     return result;
   } catch (err) {
     throw new Error(err.message);
@@ -47,6 +50,10 @@ const getTransactionById = async (id) => {
     const result = await prisma.transaction.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        sourceAccount: true,
+        destinationAccount: true,
       },
     });
     return result;

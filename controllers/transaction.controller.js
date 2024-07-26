@@ -11,21 +11,75 @@ const create = async (req, res) => {
   const {
     source_account_id,
     destination_account_id,
-    // transaction_type_id,
+    transaction_type_id,
     amount,
     note,
     transaction_status,
-    transaction_date,
   } = req.body;
+
+  if (
+    !source_account_id ||
+    !destination_account_id ||
+    !amount ||
+    !note ||
+    !transaction_status
+  ) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Please provide all required fields",
+    });
+  }
+
+  if (source_account_id === destination_account_id) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Source account and destination account cannot be the same",
+    });
+  }
+
+  const validStatus = ["Success", "Failure", "Pending"];
+  if (!validStatus.includes(transaction_status)) {
+    return res.status(400).json({
+      status: "Fail",
+      message:
+        "Invalid transaction status. Allowed values are 'Success', 'Failure', or 'Pending'.",
+    });
+  }
+
   try {
+    const sourceAccount = await account.getAccountById(source_account_id);
+    const destinationAccount = await account.getAccountById(
+      destination_account_id
+    );
+
+    if (!sourceAccount) {
+      return res.status(404).json({
+        status: "Fail",
+        message: "Source account not found",
+      });
+    }
+
+    if (!destinationAccount) {
+      return res.status(404).json({
+        status: "Fail",
+        message: "Destination account not found",
+      });
+    }
+
+    if (sourceAccount.balance < amount) {
+      return res.status(400).json({
+        status: "Fail",
+        message: "Insufficient balance",
+      });
+    }
+
     const transaction = await createTransaction({
       source_account_id,
       destination_account_id,
-      //   transaction_type_id,
+      transaction_type_id,
       amount,
       note,
       transaction_status,
-      transaction_date,
     });
     res.status(201).json({
       status: "Success",

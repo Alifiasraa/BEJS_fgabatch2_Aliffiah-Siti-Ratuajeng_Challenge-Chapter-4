@@ -8,6 +8,14 @@ const {
 
 const create = async (req, res) => {
   const { description, district, province, country, post_code } = req.body;
+
+  if (!description || !district || !province || !country || !post_code) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Please provide all required fields",
+    });
+  }
+
   try {
     const address = await createAddress({
       description,

@@ -11,6 +11,9 @@ const createAccount = async (data) => {
         balance: balance,
         account_status: account_status,
       },
+      include: {
+        user: true,
+      },
     });
     return result;
   } catch (err) {
@@ -20,7 +23,11 @@ const createAccount = async (data) => {
 
 const getAllAcounts = async () => {
   try {
-    const result = await prisma.account.findMany();
+    const result = await prisma.account.findMany({
+      include: {
+        user: true,
+      },
+    });
     return result;
   } catch (err) {
     throw new Error(err.message);
@@ -32,6 +39,9 @@ const getAccountById = async (id) => {
     const result = await prisma.account.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        user: true,
       },
     });
     return result;

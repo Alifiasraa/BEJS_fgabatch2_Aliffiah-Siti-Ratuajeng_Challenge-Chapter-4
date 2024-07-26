@@ -8,6 +8,23 @@ const {
 
 const create = async (req, res) => {
   const { user_id, account_number, balance, account_status } = req.body;
+
+  if (!user_id || !account_number || !balance || account_status) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Please provide all required fields",
+    });
+  }
+
+  const validStatus = ["Active", "Inactive"];
+  if (!validStatus.includes(account_status)) {
+    return res.status(400).json({
+      status: "Fail",
+      message:
+        "Invalid account status. Allowed values are 'Active' or 'Inactive'.",
+    });
+  }
+
   try {
     const account = await createAccount({
       user_id,

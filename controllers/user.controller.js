@@ -9,6 +9,29 @@ const {
 const create = async (req, res) => {
   const { name, gender, birth_date, phone_number, email, address_id } =
     req.body;
+
+  const validGender = ["Male", "Female"];
+  if (!validGender.includes(gender)) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Invalid gender. Allowed values are 'Male' or 'Female'.",
+    });
+  }
+
+  if (
+    !name ||
+    !gender ||
+    !birth_date ||
+    !phone_number ||
+    !email ||
+    !address_id
+  ) {
+    return res.status(400).json({
+      status: "Fail",
+      message: "Please provide all required fields",
+    });
+  }
+
   try {
     const user = await createUser({
       name,
