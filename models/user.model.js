@@ -4,7 +4,7 @@ const createUser = async (data) => {
   const { name, gender, birth_date, phone_number, email, address_id } = data;
 
   try {
-    const result = prisma.user.create({
+    const result = await prisma.user.create({
       data: {
         name: name,
         gender: gender,
@@ -22,7 +22,7 @@ const createUser = async (data) => {
 
 const getAllUsers = async () => {
   try {
-    const result = prisma.user.findMany();
+    const result = await prisma.user.findMany();
     return result;
   } catch (err) {
     throw new Error(err.message);
@@ -31,7 +31,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   try {
-    const result = prisma.user.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         id: id,
       },
@@ -44,7 +44,7 @@ const getUserById = async (id) => {
 
 const updateUserById = async (id, reqBody) => {
   try {
-    const result = prisma.user.update({
+    const result = await prisma.user.update({
       where: {
         id: id,
       },
