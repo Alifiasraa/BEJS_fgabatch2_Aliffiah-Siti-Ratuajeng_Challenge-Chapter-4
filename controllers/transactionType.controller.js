@@ -1,6 +1,7 @@
 const {
   createTransactionType,
   getAllTransactionTypes,
+  getTransactionTypeById,
   updateTransactionTypeById,
   deleteTransactionTypeById,
 } = require("../models/transactionType.model");
@@ -52,7 +53,7 @@ const getAllTypes = async (req, res) => {
 const getTypeById = async (req, res) => {
   try {
     const id = req.params.id;
-    const transactionType = await updateTransactionTypeById(id);
+    const transactionType = await getTransactionTypeById(id);
     res.status(200).json({
       status: "Success",
       message: "Transaction type retrieved successfully",

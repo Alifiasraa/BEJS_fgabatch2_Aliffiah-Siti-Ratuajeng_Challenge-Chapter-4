@@ -38,11 +38,11 @@ const create = async (req, res) => {
   }
 
   const validStatus = ["Success", "Failure", "Pending"];
-  if (!validStatus.includes(validStatus)) {
+  if (!validStatus.includes(transaction_status)) {
     return res.status(400).json({
       status: "Fail",
       message:
-        "Invalid transaction status. Allowed values are 'Success', 'Failure', or 'Female'.",
+        "Invalid transaction status. Allowed values are 'Success', 'Failure', or 'Pending'.",
     });
   }
 

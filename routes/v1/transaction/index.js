@@ -15,18 +15,18 @@ const {
   deleteTypeById,
 } = require("../../../controllers/transactionType.controller");
 
+// transaction_type
+router.get("/type", getAllTypes);
+router.get("/type/:id", getTypeById);
+router.post("/type", createType);
+router.put("/type/:id", updateTypeById);
+router.delete("/type/:id", deleteTypeById);
+
 // transaction
 router.post("/", create);
 router.get("/", getAll);
 router.get("/:id", getById);
 router.put("/:id", updateById);
 router.delete("/:id", deleteById);
-
-// transaction_type
-router.post("/type", createType);
-router.get("/type", getAllTypes);
-router.get("/type/:id", getTypeById);
-router.put("/type/:id", updateTypeById);
-router.delete("/type/:id", deleteTypeById);
 
 module.exports = router;
